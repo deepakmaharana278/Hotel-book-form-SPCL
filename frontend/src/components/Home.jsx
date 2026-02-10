@@ -6,17 +6,73 @@ import Navbar from "./Navbar";
 
 const Home = () => {
   const navigate = useNavigate();
+  const hotels = [
+    {
+      id: 1,
+      name: "Ocean View Resort",
+      location: "Goa",
+      price: 4500,
+      image: "https://images.unsplash.com/photo-1566073771259-6a8506099945",
+    },
+    {
+      id: 2,
+      name: "Mountain Paradise",
+      location: "Manali",
+      price: 3200,
+      image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa",
+    },
+    {
+      id: 3,
+      name: "City Luxury Hotel",
+      location: "Bangalore",
+      price: 5200,
+      image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb",
+    },
+  ];
 
   return (
     <div>
       <Navbar />
-      <div className="w-full bg-[#8DD8CC] text-gray-900 h-100 text-center flex items-center justify-center">
+      <div className="w-full bg-linear-to-r from-[#D4A373] via-[#E6C79C] to-[#D4A373] h-100 text-center flex items-center justify-center">
         <div className="p-10">
           <h1 className="font-bold heading text-3xl md:text-5xl tracking-tight">STAY • BOOK • RELAX</h1>
           <p className="m-5 text-sm">A smarter way to book hotels with transparent pricing, instant confirmation, and stays tailored to your travel needs.</p>
-          <button onClick={() => navigate("/booking")} className="bg-teal-900 hover:bg-teal-700 text-white text-xl cursor-pointer px-4 py-1 rounded-md">
+          <button onClick={() => navigate("/booking")} className="bg-[#c8823c] hover:bg-[#c48a5b] text-white text-xl cursor-pointer px-4 py-1 rounded-md">
             Book now
           </button>
+        </div>
+      </div>
+
+      <div className="bg-gray-100 py-16 px-6 md:px-20">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#045054] mb-10">Popular Hotels</h2>
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
+          {hotels.map((hotel) => (
+            <div key={hotel.id} className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition duration-300">
+              <div className="overflow-hidden">
+                <img src={hotel.image} alt={hotel.name} className="h-48 w-full object-cover group-hover:scale-110 transition duration-500" />
+              </div>
+
+              <div className="p-5">
+                <h3 className="text-xl font-semibold text-[#6B4F4F]">{hotel.name}</h3>
+                <p className="text-gray-600">{hotel.location}</p>
+
+
+                <div className="flex items-center gap-1 mt-2 text-[#D4A373]">
+                  ★★★★☆
+                  <span className="text-gray-600 text-sm ml-2">(4.5)</span>
+                </div>
+
+                <p className="mt-2 font-bold text-lg text-[#D4A373]">
+                  ₹{hotel.price}
+                  <span className="text-sm font-normal text-gray-600"> / night</span>
+                </p>
+
+                <button onClick={() => navigate("/booking", { state: hotel })} className="mt-4 w-full bg-[#6B4F4F] hover:bg-[#5a3f3f] text-white py-2 rounded-lg transition">
+                  Book Now
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -82,7 +138,7 @@ const Home = () => {
               <textarea rows="5" placeholder="Write your message..." className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-600"></textarea>
             </div>
             <div className="md:col-span-2 text-center">
-              <button type="submit" className="bg-[#045054] text-white px-8 py-3 rounded-lg hover:bg-teal-700 transition">
+              <button type="submit" className="bg-[#c48a5b] text-white px-8 py-3 rounded-lg hover:bg-[#cc8144]">
                 Send Message
               </button>
             </div>

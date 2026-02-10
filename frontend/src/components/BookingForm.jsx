@@ -102,7 +102,7 @@ const BookingForm = () => {
             </div>
             <div>
               <label className="block font-medium mb-2">Check-out Date</label>
-              <input type="date" name="checkOut" value={formData.checkOut} onChange={handleChange} className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+              <input type="date" name="checkOut" min={formData.checkIn} value={formData.checkOut} onChange={handleChange} className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-600" />
               {errors.checkOut && <p className="text-red-500 text-sm">{errors.checkOut}</p>}
             </div>
 
@@ -110,9 +110,12 @@ const BookingForm = () => {
               <label className="block font-medium mb-2">Room Type</label>
               <select name="roomType" value={formData.roomType} onChange={handleChange} className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-600">
                 <option value="">Select Room</option>
-                <option>Single</option>
-                <option>Double</option>
+                <option>Single Room</option>
+                <option>Double Room</option>
                 <option>Suite</option>
+                <option>Family Room</option>
+                <option>Deluxe Room</option>
+                <option>Presidential Suite</option>
               </select>
               {errors.roomType && <p className="text-red-500 text-sm">{errors.roomType}</p>}
             </div>
