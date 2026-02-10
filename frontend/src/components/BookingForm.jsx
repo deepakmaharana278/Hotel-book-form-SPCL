@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Navbar from "./Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { db } from "../firebase";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 const BookingForm = () => {
   const [formData, setFormData] = useState({
@@ -52,25 +54,44 @@ const BookingForm = () => {
     setErrors({});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const validationErrors = validate();
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
-    }    
-    toast.success("Booking submitted successfully!");
-    console.log(formData);
-    setFormData({
-      fullname: "",
-      phone: "",
-      checkIn: "",
-      checkOut: "",
-      roomType: "",
-      guests: "",
-      specialRequest: "",
-    });
+    }
+
+    try {
+      await addDoc(collection(db, "bookings"), {
+        fullname: formData.fullname,
+        phone: formData.phone,
+        checkIn: formData.checkIn,
+        checkOut: formData.checkOut,
+        roomType: formData.roomType,
+        guests: Number(formData.guests),
+        specialRequest: formData.specialRequest,
+        createdAt: Timestamp.now(),
+      });
+
+      toast.success("Booking saved successfully!");
+      setFormData({
+        fullname: "",
+        phone: "",
+        checkIn: "",
+        checkOut: "",
+        roomType: "",
+        guests: "",
+        specialRequest: "",
+      });
+
+      setErrors({});
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to save booking");
+    }
   };
 
   return (
@@ -102,7 +123,14 @@ const BookingForm = () => {
             </div>
             <div>
               <label className="block font-medium mb-2">Check-out Date</label>
-              <input type="date" name="checkOut" min={formData.checkIn} value={formData.checkOut} onChange={handleChange} className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+              <input
+                type="date"
+                name="checkOut"
+                min={formData.checkIn}
+                value={formData.checkOut}
+                onChange={handleChange}
+                className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-600"
+              />
               {errors.checkOut && <p className="text-red-500 text-sm">{errors.checkOut}</p>}
             </div>
 
@@ -127,7 +155,13 @@ const BookingForm = () => {
             </div>
             <div className="md:col-span-2">
               <label className="block font-medium mb-2">Special Request</label>
-              <textarea rows="4" value={formData.specialRequest} name="specialRequest" onChange={handleChange} className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-600"></textarea>
+              <textarea
+                rows="4"
+                value={formData.specialRequest}
+                name="specialRequest"
+                onChange={handleChange}
+                className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-600"
+              ></textarea>
             </div>
 
             <div className="md:col-span-2 text-center">
